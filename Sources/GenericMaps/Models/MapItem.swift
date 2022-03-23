@@ -12,6 +12,11 @@ import UIKit
 public struct MapItemImage {
 	public var selectedImage: UIImage?
 	public var unselectedImage: UIImage?
+
+	public init(selectedImage: UIImage?, unselectedImage: UIImage?) {
+		self.selectedImage = selectedImage
+		self.unselectedImage = unselectedImage
+	}
 }
 
 /// Элемент, который отображается на карте
