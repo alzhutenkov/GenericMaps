@@ -127,7 +127,7 @@ enum DataAccessor {
 	}
 
 	static var mapTypes: [MapType] {
-//		config?.maps ?? []
-		[.dgisMaps]
+		config?.maps ?? []
+//		[.dgisMaps]
 	}
 }
