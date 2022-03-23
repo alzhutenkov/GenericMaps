@@ -28,11 +28,11 @@ public struct MapCoordinate: Codable, Equatable, Hashable {
 	}
 }
 
-extension MapCoordinate {
+public extension MapCoordinate {
 	/// Нулевая координата
-	static let zero = MapCoordinate(latitude: 0.0, longitude: 0.0)
+	public static let zero = MapCoordinate(latitude: 0.0, longitude: 0.0)
 
-	func approximateDelta(approximateDelta: Double) -> MapCoordinate {
+	public func approximateDelta(approximateDelta: Double) -> MapCoordinate {
 		let koef = 1 / cos(self.latitude / 180 * Double.pi)
 		let centerX = floor((180 + self.longitude) / approximateDelta)
 		let centerY = floor(self.latitude * koef / approximateDelta)

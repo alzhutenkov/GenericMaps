@@ -29,9 +29,9 @@ public extension MapVector {
 	/// Определение положения точки, относителя текущего вектора
 	/// - Parameter point: Точка для определения
 	/// - Returns: Ответ на вопрос: лежит ли точка справа от вектора или нет
-	func pointBelongToRightSideOfVector(_ point: MapCoordinate) -> Bool {
+	public func pointBelongToRightSideOfVector(_ point: MapCoordinate) -> Bool {
 		let coefficientD = (finish.latitude - start.latitude) * (point.longitude - start.longitude) -
-			(point.latitude - start.latitude) * (finish.longitude - start.longitude)
+		(point.latitude - start.latitude) * (finish.longitude - start.longitude)
 		return coefficientD >= 0
 	}
 }

@@ -33,16 +33,16 @@ public extension MapRegion {
 	/// Зум региона
 	/// 
 	/// - Returns: зум
-	func zoomLevel() -> Int {
+	public func zoomLevel() -> Int {
 		guard span.longitudeDelta > 0 else { return 15 }
 		return Int(log2(360 / span.longitudeDelta)) + 1
 	}
 
 	/// Преобразование в прямоугольник карты
-	var mapRect: MapRect {
+	public var mapRect: MapRect {
 		return MapRect(topLeft: MapCoordinate(latitude: center.latitude + span.latitudeDelta / 2,
-										   longitude: center.longitude - span.longitudeDelta / 2),
+											  longitude: center.longitude - span.longitudeDelta / 2),
 					   bottomRight: MapCoordinate(latitude: center.latitude - span.latitudeDelta / 2,
-											   longitude: center.longitude + span.longitudeDelta / 2))
+												  longitude: center.longitude + span.longitudeDelta / 2))
 	}
 }

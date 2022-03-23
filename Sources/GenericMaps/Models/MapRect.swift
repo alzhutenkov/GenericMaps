@@ -25,9 +25,9 @@ public struct MapRect {
 	}
 
 	/// Преобразование к региону карты
-	var mapRegion: MapRegion {
+	public var mapRegion: MapRegion {
 		return MapRegion(center: MapCoordinate(latitude: (topLeft.latitude + bottomRight.latitude) / 2,
-											longitude: (bottomRight.longitude + topLeft.longitude) / 2),
+											   longitude: (bottomRight.longitude + topLeft.longitude) / 2),
 						 span: MapRegionSize(latitudeDelta: topLeft.latitude - bottomRight.latitude,
 											 longitudeDelta: bottomRight.longitude - topLeft.longitude))
 	}

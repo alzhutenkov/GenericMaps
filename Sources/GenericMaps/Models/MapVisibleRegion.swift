@@ -38,13 +38,13 @@ public struct MapVisibleRegion {
 	}
 
 	/// Центр видимого региона
-	var center: MapCoordinate {
+	public var center: MapCoordinate {
 		MapCoordinate(latitude: (topRight.latitude + bottomLeft.latitude) / 2,
 				   longitude: (topRight.longitude + bottomLeft.longitude) / 2)
 	}
 
 	/// Зум видимого региона
-	var zoom: Int {
+	public var zoom: Int {
 		let longitudeDelta = sqrt(pow((topLeft.longitude - bottomLeft.longitude), 2)
 									+ pow(topLeft.latitude - bottomLeft.latitude, 2))
 		guard longitudeDelta > 0 else { return 15 }
@@ -52,13 +52,13 @@ public struct MapVisibleRegion {
 	}
 }
 
-extension MapVisibleRegion {
-	func pointBelongsToRegion(_ point: MapCoordinate) -> Bool {
+public extension MapVisibleRegion {
+	public func pointBelongsToRegion(_ point: MapCoordinate) -> Bool {
 		let vectors = [MapVector(start: bottomLeft, finish: topLeft),
 					   MapVector(start: topLeft, finish: topRight),
 					   MapVector(start: topRight, finish: bottomRight),
 					   MapVector(start: bottomRight, finish: bottomLeft)]
-
+		
 		for vector in vectors {
 			let onRightSideOfVector = vector.pointBelongToRightSideOfVector(point)
 			if !onRightSideOfVector {

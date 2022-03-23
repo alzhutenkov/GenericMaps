@@ -53,7 +53,7 @@ extension MapItem: Hashable {
 
 // MARK: - Equatable
 
-extension MapItem: Equatable {
+public extension MapItem: Equatable {
 	public static func == (lhs: MapItem, rhs: MapItem) -> Bool {
 		return lhs.coordinate == rhs.coordinate
 	}
