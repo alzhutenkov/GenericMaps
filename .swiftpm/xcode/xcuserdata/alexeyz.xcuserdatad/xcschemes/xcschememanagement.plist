@@ -27,6 +27,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>GenericMaps</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>PooledMaps</key>
 		<dict>
 			<key>primary</key>

@@ -21,7 +21,7 @@ public enum GenericMapsType: String, CaseIterable {
 }
 
 public class GenericMapsFactory {
-	static public func maps(by type: GenericMapsType) -> FacadeMapProtocol {
+	static public func map(by type: GenericMapsType) -> FacadeMapProtocol {
 		switch type {
 #if DGISMAPS
 		case .dGIS:
@@ -34,12 +34,11 @@ public class GenericMapsFactory {
 		}
 	}
 
-#if ONLYONEMAP
+	/// Получение инстанса типа карты в зависимости от конфига
 	static public var map: FacadeMapProtocol {
 		guard let type = GenericMapsType.allCases.first else {
 			fatalError("Something wrong with maps")
 		}
-		return maps(by: type)
+		return map(by: type)
 	}
-#endif
 }

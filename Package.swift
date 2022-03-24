@@ -99,35 +99,14 @@ func makeTargets(with types: [MapType]) -> [Target] {
 	return list
 }
 
-/// Конфиг структуры данных для парсинга
-struct PackageConfig: Decodable {
-	let maps: [MapType]
-}
-
 /// Акцессор для получения данных, не важно от куда
 enum DataAccessor {
-	// MARK: - Чтение конфига
-	static var config: PackageConfig? {
-		let packageRootPath = URL(fileURLWithPath: #file)
-			.pathComponents
-			.dropLast()
-			.joined(separator: "/")
-			.dropFirst() + "/" + Constants.configName
-		let configURL = URL(fileURLWithPath: packageRootPath)
-		do {
-			let decoder = JSONDecoder()
-			let data = try Data(contentsOf: configURL)
-			let config = try decoder.decode(PackageConfig.self, from: data)
-			return config
-		} catch let error {
-			print("error: \(error)")
-		}
-
-		return nil
-	}
-
+	private static let enviromentKey = "GENERIC_MAPS_ENV"
+	
 	static var mapTypes: [MapType] {
-		config?.maps ?? []
-//		[.dgisMaps]
+		guard let envPointer = getenv(enviromentKey) else { return [.appleMaps] }
+		let data = String(cString: envPointer)
+		let types = data.components(separatedBy: ",").compactMap({ MapType(rawValue:$0) })
+		return types
 	}
 }
