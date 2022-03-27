@@ -7,7 +7,7 @@ enum Constants {
 	static let supportedPlatforms: [SupportedPlatform] = [.iOS(.v13)]
 	
 	// Основной пакет
-	static let configFilePath = ".kingConfig/GenericMaps.conf"
+	static let configFilePath = ".genericConfig/GenericMaps.conf"
 	static let packageName = "GenericMaps"
 	static let testPackageName = "GenericMapsTests"
 

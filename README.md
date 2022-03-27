@@ -3,7 +3,7 @@
 Перечислять через ","
 Возможные значения: "DGISMAPS,APPLEMAPS"
 
-конфиг должен лежать по пути $HOME/.kingConfig/GenericMaps.conf
+конфиг должен лежать по пути $HOME/.genericConfig/GenericMaps.conf
 
 HOME - это environment переменная 
-/Users/имяпользователя/.kingConfig/GenericMaps.conf
+/Users/имяпользователя/.genericConfig/GenericMaps.conf
