@@ -7,7 +7,7 @@ enum Constants {
 	static let supportedPlatforms: [SupportedPlatform] = [.iOS(.v13)]
 	
 	// Основной пакет
-	static let configName = "PackageConfig.json"
+	static let configFilePath = ".kingConfig/GenericMaps.conf"
 	static let packageName = "GenericMaps"
 	static let testPackageName = "GenericMapsTests"
 
@@ -101,12 +101,21 @@ func makeTargets(with types: [MapType]) -> [Target] {
 
 /// Акцессор для получения данных, не важно от куда
 enum DataAccessor {
-	private static let enviromentKey = "GENERIC_MAPS_ENV"
-	
 	static var mapTypes: [MapType] {
-		guard let envPointer = getenv(enviromentKey) else { return [.appleMaps] }
-		let data = String(cString: envPointer)
-		let types = data.components(separatedBy: ",").compactMap({ MapType(rawValue:$0) })
-		return types
+		let defaultTypes: [MapType] = [.appleMaps]
+		guard let home = ProcessInfo.processInfo.environment["HOME"] else { return defaultTypes }
+		let filePath = "\(home)/\(Constants.configFilePath)"
+		let pathComponents = URL(fileURLWithPath: filePath).pathComponents
+		let packageRootPath = pathComponents.dropFirst().joined(separator: "/")
+		let configURL = URL(fileURLWithPath: packageRootPath)
+		guard let data = try? Data(contentsOf: configURL),
+			  let dataString = String(
+				data: data,
+				encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
+		else {
+			return defaultTypes
+		}
+		let list = dataString.components(separatedBy: ",").compactMap({ MapType(rawValue: $0) })
+		return list.isEmpty ? defaultTypes : list
 	}
 }

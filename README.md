@@ -1,6 +1,9 @@
 # GenericMaps
 
 Перечислять через ","
-Общаться через enviroment ключ "GENERIC_MAPS_ENV"
+Возможные значения: "DGISMAPS,APPLEMAPS"
 
-Возможные знчения: "DGISMAPS,APPLEMAPS"
+конфиг должен лежать по пути $HOME/.kingConfig/GenericMaps.conf
+
+HOME - это environment переменная 
+/Users/имяпользователя/.kingConfig/GenericMaps.conf
