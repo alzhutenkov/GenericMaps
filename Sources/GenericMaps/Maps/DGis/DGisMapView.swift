@@ -148,7 +148,8 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 		self.configuration = configuration
 		styleFactory = sdk.makeStyleFactory
 		let options = DGisMapStyleFactory().makeOptions(with: configuration, styleFactory: styleFactory())
-		mapFactory = sdk.makeMapFactory(options: options)
+		guard let factory = try? sdk.makeMapFactory(options: options) else { fatalError("Can't init map") }
+		mapFactory = factory
 		let map = mapFactory.map
 		imageFactoryBuilder = { sdk.imageFactory }
 		self.sdk = sdk
@@ -178,8 +179,8 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 	func showPolygon(points: [MapCoordinate]) {
 
 		let  points = points.map { mapCoordinate in
-			GeoPoint(latitude: Arcdegree(value: mapCoordinate.latitude),
-					 longitude: Arcdegree(value: mapCoordinate.longitude))
+			GeoPoint(latitude: Latitude(value: mapCoordinate.latitude),
+					 longitude: Longitude(value: mapCoordinate.longitude))
 		}
 		let color = Color(argb: UInt32(UIColor.red.withAlphaComponent(0.5).hexa))
 		let options = PolygonOptions(contours: [points], color: color, strokeColor: color)
@@ -191,8 +192,8 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 	/// - Parameter mapCoordinate: координата карты
 	/// - Returns: координата CGPoint
 	func mapCoordinateToPoint(with mapCoordinate: MapCoordinate) -> CGPoint? {
-		let geoPoint = GeoPoint(latitude: Arcdegree(value: mapCoordinate.latitude),
-								longitude: Arcdegree(value: mapCoordinate.longitude))
+		let geoPoint = GeoPoint(latitude: Latitude(value: mapCoordinate.latitude),
+								longitude: Longitude(value: mapCoordinate.longitude))
 		if let geo = map.camera.projection.mapToScreen(point: geoPoint) {
 			let mapCoordinate = CGPoint(x: CGFloat(geo.x), y: CGFloat(geo.y))
 			return mapCoordinate
@@ -267,19 +268,19 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 	///   - mapRect: прямоугольник карты
 	///   - animation: анимированно
 	func show(mapRect: MapRect, animation: Bool) {
-		let botttomRight = GeoPoint(latitude: Arcdegree(value: mapRect.bottomRight.latitude),
-									longitude: Arcdegree(value: mapRect.bottomRight.longitude))
-		let bottomLeft = GeoPoint(latitude: Arcdegree(value: mapRect.bottomRight.latitude),
-								  longitude: Arcdegree(value: mapRect.topLeft.longitude))
-		let topLeft = GeoPoint(latitude: Arcdegree(value: mapRect.topLeft.latitude),
-							   longitude: Arcdegree(value: mapRect.topLeft.longitude))
-		let topRight = GeoPoint(latitude: Arcdegree(value: mapRect.topLeft.latitude),
-								longitude: Arcdegree(value: mapRect.bottomRight.longitude))
+		let botttomRight = GeoPoint(latitude: Latitude(value: mapRect.bottomRight.latitude),
+									longitude: Longitude(value: mapRect.bottomRight.longitude))
+		let bottomLeft = GeoPoint(latitude: Latitude(value: mapRect.bottomRight.latitude),
+								  longitude: Longitude(value: mapRect.topLeft.longitude))
+		let topLeft = GeoPoint(latitude: Latitude(value: mapRect.topLeft.latitude),
+							   longitude: Longitude(value: mapRect.topLeft.longitude))
+		let topRight = GeoPoint(latitude: Latitude(value: mapRect.topLeft.latitude),
+								longitude: Longitude(value: mapRect.bottomRight.longitude))
 		let geometry = PolygonGeometry(contours: [[botttomRight, bottomLeft, topLeft, topRight]])
 		let position = calcPosition(camera: map.camera,
 									geometry: geometry,
 									tilt: Tilt(value: 0),
-									bearing: Arcdegree(value: 0))
+									bearing: Bearing(value: 0))
 		setCenterMapCoordinate(сoordinate: MapCoordinate(latitude: position.point.latitude.value,
 														  longitude: position.point.longitude.value),
 							   zoomLevel: position.zoom.value,
@@ -301,8 +302,8 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 	///   - selected: выбрать
 	func add(item: MapItem, toBackground: Bool, selected: Bool) {
 		guard let icon = image(for: item, selected: selected, toBackground: toBackground) else { return }
-		let point = GeoPointWithElevation(latitude: Arcdegree(value: item.coordinate.latitude),
-										  longitude: Arcdegree(value: item.coordinate.longitude))
+		let point = GeoPointWithElevation(latitude: Latitude(value: item.coordinate.latitude),
+										  longitude: Longitude(value: item.coordinate.longitude))
 		let options = MarkerOptions(position: point,
 									icon: imageFactory.make(image: icon),
 									anchor: .init(x: 0.5, y: 1),
@@ -544,8 +545,8 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 
 	func showPolyline(_ polyline: MapPolyline) {
 		let points = polyline.coordinates.map { coordinate in
-			GeoPoint(latitude: Arcdegree(value: coordinate.latitude),
-					 longitude: Arcdegree(value: coordinate.longitude))
+			GeoPoint(latitude: Latitude(value: coordinate.latitude),
+					 longitude: Longitude(value: coordinate.longitude))
 		}
 
 		let color = Color(argb: UInt32(polyline.color.hexa))
@@ -618,10 +619,10 @@ final class GISMapView: NSObject, FacadeMapProtocol {
 		return CGAffineTransform(scaleX: scale, y: scale)
 	}()
 
-	private var geoRect: GeoRect = GeoRect(southWestPoint: GeoPoint(latitude: Arcdegree(value: 0),
-																	longitude: Arcdegree(value: 0)),
-										   northEastPoint: GeoPoint(latitude: Arcdegree(value: 0),
-																	longitude: Arcdegree(value: 0)))
+	private var geoRect: GeoRect = GeoRect(southWestPoint: GeoPoint(latitude: Latitude(value: 0),
+																	longitude: Longitude(value: 0)),
+										   northEastPoint: GeoPoint(latitude: Latitude(value: 0),
+																	longitude: Longitude(value: 0)))
 
 	private let imageFactoryBuilder: () -> DGis.IImageFactory
 	private lazy var imageFactory = imageFactoryBuilder()

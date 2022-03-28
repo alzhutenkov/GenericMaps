@@ -39,8 +39,8 @@ enum MapType: String, CaseIterable, Decodable {
 		case .dgisMaps:
 			return .binaryTarget(
 				name: Constants.dGisPackageName,
-				url: "https://zhutenkov.com/sdk/dgis_1.6.16/DGisFullSDK.zip",
-				checksum: "ff889232a28e15682a98f67c4dca303c52aa5f351f92a5fcedd476c5d8f90bd6")
+				url: "https://artifactory.2gis.dev/sdk-ios-release/2.5.0/Release/DGisFullSDK.zip",
+				checksum: "0d7c3af09d8a3177b3b52a37dc9aa486e08abbbab1e832343f0d1dc4f84f3c1f")
 		case .appleMaps:
 			return nil
 		}
